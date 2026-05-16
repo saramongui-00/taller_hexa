@@ -1,6 +1,12 @@
-package edu.uptc.swii.customerservicehexa.domain.model;
+package edu.uptc.swii.customerservicehexa.infrastructure.entities;
 
-public class Customer {
+import edu.uptc.swii.customerservicehexa.domain.model.Customer;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class CustomerEntity {
+    @Id
     private String document;
     private String firstname;
     private String lastname;
@@ -8,13 +14,26 @@ public class Customer {
     private String phone;
     private String email;
 
-    public Customer(String document, String firstname, String lastname, String address, String phone, String email) {
+    public CustomerEntity() {
+    }
+
+    public CustomerEntity(String document, String firstname, String lastname, String address, String phone,
+            String email) {
         this.document = document;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.phone = phone;
         this.email = email;
+    }
+
+    public static CustomerEntity fromDomainModel(Customer customer) {
+        return new CustomerEntity(customer.getDocument(), customer.getFirstname(), customer.getLastname(),
+                customer.getAddress(), customer.getPhone(), customer.getEmail());
+    }
+
+    public Customer toDomainModel() {
+        return new Customer(document, firstname, lastname, address, phone, email);
     }
 
     public String getDocument() {
